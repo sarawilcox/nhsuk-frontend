@@ -5,6 +5,7 @@ var nunjucks = require('nunjucks')
 var inplace = require('metalsmith-in-place')
 var rename = require('metalsmith-rename')
 
+var usage = require('./usage.js')
 var breadcrumbs = require('./breadcrumbs.js')
 
 var env = nunjucks.configure(['site/_layouts', 'packages'], { autoescape: true });
@@ -17,6 +18,9 @@ var engineOptions = {
   path: ['site/_layouts', 'packages'],
   globals: {
     baseUrl: process.env.BASE_URL ? process.env.BASE_URL : '',
+    usage: function(usageFile) {
+      return usage(env, 'code-snippet.njk')(usageFile)
+    },
   }
 }
 
