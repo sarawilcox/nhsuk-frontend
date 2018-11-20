@@ -112,7 +112,7 @@ function createZip() {
  * Recompile CSS, JS and docs when there are any changes
  */
 var watch = function() {
-  gulp.watch(['packages/**/*', 'docs/**/*'], gulp.series(['build', 'docs:build']));
+  gulp.watch(['packages/**/*', 'docs/**/*', 'site/**/*'], gulp.series(['build', 'docs:build']));
 }
 
 
