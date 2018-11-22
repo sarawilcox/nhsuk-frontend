@@ -31,7 +31,7 @@ function cleanDist() {
 function compileCSS() {
   return gulp.src(['packages/nhsuk.scss'])
     .pipe(sass())
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist/css'))
     .on('error', (err) => {
       console.log(err)
       process.exit(1)
@@ -43,12 +43,12 @@ function compileCSS() {
  */
 function minifyCSS() {
   return gulp.src([
-    'dist/*.css',
-    '!dist/*.min.css', // don't re-minify minified css
+    'dist/css/*.css',
+    '!dist/css/*.min.css', // don't re-minify minified css
   ])
     .pipe(cleanCSS())
     .pipe(rename({
-      suffix: `-${package.version}.min`
+      suffix: `.min`
     }))
     .pipe(gulp.dest('dist/css/'))
 }
@@ -65,7 +65,7 @@ function compileJS() {
       'packages/components/skip-link/skip-link.js'
     ])
     .pipe(concat('nhsuk.js'))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('dist/js'));
 }
 
 /**
@@ -73,12 +73,12 @@ function compileJS() {
  */
 function minifyJS() {
   return gulp.src([
-    'dist/*.js',
-    '!dist/*.min.js', // don't re-minify minified javascript
+    'dist/js/*.js',
+    '!dist/js/*.min.js', // don't re-minify minified javascript
   ])
     .pipe(uglify())
     .pipe(rename({
-      suffix: `-${package.version}.min`
+      suffix: `.min`
     }))
     .pipe(gulp.dest('dist/js/'))
 }
@@ -90,6 +90,52 @@ function minifyJS() {
 function assets() {
   return gulp.src('packages/assets/**')
     .pipe(gulp.dest('dist/assets/'))
+}
+
+/**
+ * Add a version number to minified files
+ */
+function versionMinifiedAssets() {
+  return gulp.src([
+    'dist/css/nhsuk.min.css',
+    'dist/js/nhsuk.min.js',
+  ], { base: 'dist' })
+  .pipe(rename({
+    basename: `nhsuk-${package.version}.min`,
+  }))
+  .pipe(gulp.dest('dist/'))
+}
+
+/**
+ * Delete any un-versioned assets in dist/
+ */
+function cleanUnversioned() {
+  return gulp.src([
+    'dist/css/nhsuk.min.css',
+    'dist/js/nhsuk.min.js',
+  ])
+  .pipe(clean())
+}
+
+/**
+ * Convert nhsuk.min.* files to nhsuk-x.x.x.min.*
+ */
+gulp.task('version', gulp.series([
+  versionMinifiedAssets,
+  cleanUnversioned,
+]))
+
+/**
+ * Delete any un-minified assets in dist/
+ */
+function cleanUnminified() {
+  return gulp.src([
+    'dist/css/*.css',
+    '!dist/css/*.min.css',
+    'dist/js/*.js',
+    '!dist/js/*.min.js',
+  ], { allowEmpty: true })
+  .pipe(clean())
 }
 
 /**
@@ -117,7 +163,6 @@ var watch = function() {
   gulp.watch(['packages/**/*', 'docs/**/*'], gulp.series(['build', 'docs:build']));
 }
 
-
 gulp.task('clean', cleanDist);
 gulp.task('style', compileCSS);
 gulp.task('build', gulp.series([
@@ -129,11 +174,13 @@ gulp.task('bundle', gulp.series([
   'build',
   minifyCSS,
   minifyJS,
+  cleanUnminified,
   thirdPartyAssets,
+  assets,
 ]))
 gulp.task('zip', gulp.series([
   'bundle',
-  assets,
+  'version',
   createZip
 ]));
 gulp.task('watch', watch);
