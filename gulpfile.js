@@ -50,7 +50,7 @@ function minifyCSS() {
     .pipe(rename({
       suffix: `-${package.version}.min`
     }))
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist/css/'))
 }
 
 /**
@@ -80,24 +80,9 @@ function minifyJS() {
     .pipe(rename({
       suffix: `-${package.version}.min`
     }))
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist/js/'))
 }
 
-
-/**
- * Minify javascript without version number for npm
- */
-function packageJS() {
-  return gulp.src([
-    'dist/*.js',
-    '!dist/*.min.js', // don't re-minify minified javascript
-  ])
-    .pipe(uglify())
-    .pipe(rename({
-      suffix: `.min`
-    }))
-    .pipe(gulp.dest('packages/'))
-}
 
 /**
  * Copy assets such as icons and images into the distribution
@@ -115,28 +100,9 @@ function thirdPartyAssets() {
     .pipe(rename({
       basename: 'jquery-3.3.1.min',
     }))
-    .pipe(gulp.dest('dist/'));
-}
-
-/**
- * Copy JS files into their relevant folders
- */
-
-function jsFolder() {
-  return gulp.src('dist/*.min.js')
-    .pipe(clean())
     .pipe(gulp.dest('dist/js/'));
 }
 
-/**
- * Copy CSS files into their relevant folders
- */
-
-function cssFolder() {
-  return gulp.src('dist/*.min.css')
-    .pipe(clean())
-    .pipe(gulp.dest('dist/css/'))
-}
 
 function createZip() {
   return gulp.src(['dist/css/*.min.css', 'dist/js/*.min.js', 'dist/assets/**'], { base: 'dist' })
@@ -163,14 +129,11 @@ gulp.task('bundle', gulp.series([
   'build',
   minifyCSS,
   minifyJS,
-  packageJS
+  thirdPartyAssets,
 ]))
 gulp.task('zip', gulp.series([
   'bundle',
   assets,
-  thirdPartyAssets,
-  jsFolder,
-  cssFolder,
   createZip
 ]));
 gulp.task('watch', watch);
