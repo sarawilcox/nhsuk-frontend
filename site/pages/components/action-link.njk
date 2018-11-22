@@ -1,23 +1,18 @@
 {% set html_style = 'background-color: #f0f4f5;' %}
 {% set title = 'Action link' %}
-{% from 'components/action-link/macro.njk' import actionLink %}
-{% extends 'layout.njk' %}
+{% extends 'component-example.njk' %}
 
-{% block body %}
+{% set exampleWidth = 'content' %}
 
-  <div class="nhsuk-width-container">
-    <main id="maincontent" class="nhsuk-main-wrapper">
+{% set code %}
+  {% from 'components/action-link/macro.njk' import actionLink %}
 
-      <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-two-thirds">
-          {{ actionLink({
-            "text": "Find a minor injuries unit",
-            "href": "https://www.nhs.uk/service-search/minor-injuries-unit/locationsearch/551"
-          }) }}
-        </div>
-      </div>
+  {{ actionLink({
+    "text": "Find a minor injuries unit",
+    "href": "https://www.nhs.uk/service-search/minor-injuries-unit/locationsearch/551"
+  }) }}
+{% endset %}
 
-    </main>
-  </div>
-
+{% block description %}
+  amdoaimwd oiawmdo aiwmdo aimw d
 {% endblock %}

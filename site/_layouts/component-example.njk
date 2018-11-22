@@ -1,0 +1,35 @@
+{% extends 'page.njk' %}
+
+{% block body %}
+
+  {# if examplePosition is body, render the example inside the <body> #}
+  {{ code|safe }}
+
+  <div class="nhsuk-width-container">
+    <main id="maincontent" class="nhsuk-main-wrapper">
+      {# if examplePosition is full, render the example outside of the grid #}
+      {% if examplePosition === 'full' %}
+        {{ code|safe }}
+      {% endif %}
+
+      {# if examplePosition is content, render the example inside teh grid #}
+      {% if examplePosition === 'content' %}
+        <div class="nhsuk-grid-row">
+          <div class="nhsuk-grid-column-two-thirds">
+            {{ code|safe }}
+          </div>
+        </div>
+      {% endif %}
+
+      <h2>HTML</h2>
+      <pre class="language-html"><code>{{ code }}</code></pre>
+
+      <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-two-thirds">
+          {% block description %}{% endblock %}
+        </div>
+      </div>
+    </main>
+  </div>
+
+{% endblock %}

@@ -1,9 +1,3 @@
-{% set html_style = 'background-color: #f0f4f5;' %}
-{% set title = 'Action link' %}
-{% extends 'page.njk' %}
-
-{% block content %}
-
 # Action link
 
 Find out more about the action link component and when to use it in the [NHS Digital service manual](https://beta.nhs.uk/service-manual/patterns/).
@@ -54,5 +48,3 @@ If you are using Nunjucks, then macros take the following arguments:
 | href         | string   | Yes       | The value of the link href attribute |
 | classes      | string   | No        | Optional additional classes to add to the anchor tag. Separate each class with a space. |
 | attributes   | object   | No        | Any extra HTML attributes (for example data attributes) to add to the anchor tag. |
-
-{% endblock content %}

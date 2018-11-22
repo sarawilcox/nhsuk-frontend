@@ -25,6 +25,18 @@ var engineOptions = {
 }
 
 /**
+module.exports.componentExamples = function(done) {
+  Metalsmith(rootDir)
+    .source('components')
+    .destination('dist/docs/components')
+    .clean(false)
+    .use(function(files, metalsmith, done) {
+      // take README.md files from components and rename them.
+    })
+}
+**/
+
+/**
  * Take the contents of ./docs/ and convert it into html.
  * Docs are written for native readability on github.com, so we
  * have to apply some workarounds.

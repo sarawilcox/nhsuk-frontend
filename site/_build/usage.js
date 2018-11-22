@@ -8,9 +8,10 @@ function usage(env, template) {
     var raw = env.getTemplate(usageFile).tmplStr
     //read the file plain
 
-    var str = env.render('code-snippet.njk', {
+    var str = env.render(template, {
       html: html,
       raw: raw,
+      filepath: usageFile,
     })
     return new nunjucks.runtime.SafeString(str)
   }
