@@ -1,9 +1,13 @@
 {% extends 'page.njk' %}
 
+{% block header %}{% endblock %}
+
 {% block body %}
 
   {# if examplePosition is body, render the example inside the <body> #}
-  {{ code|safe }}
+  {% if examplePosition === 'body' %}
+    {{ code|safe }}
+  {% endif %}
 
   <div class="nhsuk-width-container">
     <main id="maincontent" class="nhsuk-main-wrapper">

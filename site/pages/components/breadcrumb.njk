@@ -1,9 +1,11 @@
 {% set html_style = 'background-color: #f0f4f5;' %}
 {% set title = 'Breadcrumb' %}
-{% from 'components/breadcrumb/macro.njk' import breadcrumb %}
-{% extends 'layout.njk' %}
+{% extends 'component-example.njk' %}
 
-{% block body %}
+{% set examplePosition = 'body' %}
+
+{% set code %}
+  {% from 'components/breadcrumb/macro.njk' import breadcrumb %}
 
   {{ breadcrumb({
     items: [
@@ -19,5 +21,8 @@
     href: "https://www.nhs.uk/conditions/abscess/",
     text: "Abscess"
   }) }}
+{% endset %}
 
+{% block description %}
+  amdoaimwd oiawmdo aiwmdo aimw d
 {% endblock %}
